@@ -16,9 +16,9 @@ function Header(props) {
         <Link to="/pool" className="link">
           <div className="headerItem">Pool</div>
         </Link>
-        <Link to="/createpool" className="link">
+        {/* <Link to="/createpool" className="link">
           <div className="headerItem">Create Pool</div>
-        </Link>
+        </Link> */}
       </div>
 
       <div className="rightH">
