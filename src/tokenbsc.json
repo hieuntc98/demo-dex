@@ -1,0 +1,30 @@
+[
+  {
+    "ticker": "CAKE",
+    "img": "https://tokens.pancakeswap.finance/images/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png",
+    "name": "cake",
+    "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+    "decimals": 18
+  },
+  {
+    "ticker": "C98",
+    "img": "https://tokens.pancakeswap.finance/images/0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6.png",
+    "name": "coin98",
+    "address": "0xaEC945e04baF28b135Fa7c640f624f8D90F1C3a6",
+    "decimals": 18
+  },
+  {
+    "ticker": "WBNB",
+    "img": "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
+    "name": "WBNB",
+    "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    "decimals": 18
+  },
+  {
+    "ticker": "BUSD",
+    "img": "https://tokens.pancakeswap.finance/images/symbol/busd.png",
+    "name": "busd",
+    "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    "decimals": 18
+  }
+]

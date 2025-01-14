@@ -1,0 +1,9 @@
+[
+  {
+    "ticker": "CRV",
+    "img": "https://cdn.moralis.io/eth/0xd533a949740bb3306d119cc777fa900ba034cd52.png",
+    "name": "Curve DAO Token",
+    "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+    "decimals": 18
+  }
+]
