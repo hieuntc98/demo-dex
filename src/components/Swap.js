@@ -3,10 +3,9 @@ import { Input, Popover, Radio, Modal, message } from "antd";
 import {
   ArrowDownOutlined,
   DownOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
 import tokenList from "../tokenList.json";
-import axios from "axios";
+
 import { useSendTransaction, useWaitForTransaction } from "wagmi";
 
 function Swap(props) {
@@ -19,7 +18,7 @@ function Swap(props) {
   const [tokenTwo, setTokenTwo] = useState(tokenList[1]);
   const [isOpen, setIsOpen] = useState(false);
   const [changeToken, setChangeToken] = useState(1);
-  const [prices, setPrices] = useState(null);
+
   const [txDetails, setTxDetails] = useState({
     to: null,
     data: null,
@@ -45,15 +44,14 @@ function Swap(props) {
 
   function changeAmount(e) {
     setTokenOneAmount(e.target.value);
-    if (e.target.value && prices) {
-      setTokenTwoAmount((e.target.value * prices.ratio).toFixed(2));
+    if (e.target.value) {
+      // setTokenTwoAmount((e.target.value * prices.ratio).toFixed(2));
     } else {
       setTokenTwoAmount(null);
     }
   }
 
   function switchTokens() {
-    setPrices(null);
     setTokenOneAmount(null);
     setTokenTwoAmount(null);
     const one = tokenOne;
@@ -66,21 +64,6 @@ function Swap(props) {
     setChangeToken(asset);
     setIsOpen(true);
   }
-
-
-
-  const settings = (
-    <>
-      <div>Slippage Tolerance</div>
-      <div>
-        <Radio.Group value={slippage} onChange={handleSlippageChange}>
-          <Radio.Button value={0.5}>0.5%</Radio.Button>
-          <Radio.Button value={2.5}>2.5%</Radio.Button>
-          <Radio.Button value={5}>5.0%</Radio.Button>
-        </Radio.Group>
-      </div>
-    </>
-  );
 
   return (
     <>
@@ -112,14 +95,6 @@ function Swap(props) {
       <div className="tradeBox">
         <div className="tradeBoxHeader">
           <h4>Swap</h4>
-          <Popover
-            content={settings}
-            title="Settings"
-            trigger="click"
-            placement="bottomRight"
-          >
-            <SettingOutlined className="corg" />
-          </Popover>
         </div>
 
         <div className="inputs">
@@ -127,10 +102,9 @@ function Swap(props) {
             placeholder="0"
             value={tokenOneAmount}
             onChange={changeAmount}
-            disabled={!prices}
           />
           <Input placeholder="0" value={tokenTwoAmount} disabled={true} />
-          <div className="switchButton" onClick={switchTokens}>
+          <div className="switchButton1" onClick={switchTokens}>
             <ArrowDownOutlined className="switchArrow" />
           </div>
           <div className="assetOne" onClick={() => openModal(1)}>

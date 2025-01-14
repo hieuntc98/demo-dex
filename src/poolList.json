@@ -4,7 +4,8 @@
         "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
         "name": "RAK-USDT",
         "address": "0x4Fb7bb788EB7330a4cd2C3EFba21e4D28400B09D",
-        "decimals": 6,
+        "decimals": 18,
+        "tokenLP": "0x2704477543a634C0e14FE409Fbeec98a0Fd59460",
         "token": [
             {
                 "ticker": "RAK",
@@ -15,7 +16,7 @@
             },
             {
                 "ticker": "USDT",
-                "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
+                "img": "https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
                 "name": "USDT",
                 "address": "0xB3AE2580B864d35206eF2c6047D30E8d88c45067",
                 "decimals": 18
