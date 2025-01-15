@@ -10,9 +10,28 @@ body {
   background-color: rgb(0, 0, 0) !important;
   background: rgb(0, 0, 0);
   background: linear-gradient(180deg,
-      rgb(0, 0, 0) 28%,
-      rgb(26, 0, 53) 75%);
+      rgb(65, 156, 231) 28%,
+      rgb(42, 85, 185) 75%);
   color: white;
+}
+
+.spanDev {
+  margin-bottom: 5px;
+  margin-top: -5px;
+}
+
+.balances1 {
+  position: absolute;
+  z-index: 999;
+  right: 20px;
+  top: -5px
+}
+
+.balances2 {
+  position: absolute;
+  z-index: 999;
+  right: 20px;
+  top: 95px
 }
 
 code {

@@ -1,24 +1,24 @@
 [
     {
-        "ticker": "LP_1",
+        "ticker": "DEX-USDC",
         "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
-        "name": "RAK-USDT",
-        "address": "0x4Fb7bb788EB7330a4cd2C3EFba21e4D28400B09D",
+        "name": "DEX-USDC",
+        "address": "0x89F54C6838BD3813A4677ec79234a2DB3ee668cE",
         "decimals": 18,
-        "tokenLP": "0x2704477543a634C0e14FE409Fbeec98a0Fd59460",
+        "tokenLP": "0x25E3395045B673Dc46dF68DF8428E471C3A9e20e",
         "token": [
             {
-                "ticker": "RAK",
+                "ticker": "DEX",
                 "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
-                "name": "RAK",
-                "address": "0x6C471153c86Bba4DE72f27f3752b94DA3C06602f",
+                "name": "DEX",
+                "address": "0x9f941D5137D1158188Ca213A884451323579Be61",
                 "decimals": 18
             },
             {
-                "ticker": "USDT",
+                "ticker": "USDC",
                 "img": "https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
-                "name": "USDT",
-                "address": "0xB3AE2580B864d35206eF2c6047D30E8d88c45067",
+                "name": "USDC",
+                "address": "0x64544969ed7ebf5f083679233325356ebe738930",
                 "decimals": 18
             }
         ]

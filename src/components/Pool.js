@@ -35,57 +35,57 @@ function Pool(props) {
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const deadline = currentTimestamp + 100000; // 5 minutes from now
 
-  console.log(pool,'____pool')
-
+  console.log(balances,'-balancesbalances')
+  console.log(pool,'_poolpool')
   const { data: reserves } = useContractRead({
-    address: "0x4Fb7bb788EB7330a4cd2C3EFba21e4D28400B09D",
+    address: pool.address,
     abi: ABIPool,
     functionName: 'getReserves',
-    enabled: tokenOneAmount !== null
+    enabled: pool && tokenOneAmount !== null
   });
 
-  const reserve0 =  reserves ? new BigNumber(String(converter.hexToDec(reserves[0]._hex))) : 0;
-  const reserve1 =  reserves ? new BigNumber(String(converter.hexToDec(reserves[1]._hex))) : 0;
-  const rate = reserve0.div(reserve1) 
-  const checkAvailableReserves =  converter.hexToDec(reserves[1]._hex) == 0 && converter.hexToDec(reserves[0]._hex) == 0
+  const reserve0 = pool && reserves ? new BigNumber(String(converter.hexToDec(reserves[0]._hex))) : 0;
+  const reserve1 = pool && reserves ? new BigNumber(String(converter.hexToDec(reserves[1]._hex))) : 0;
+  const rate = reserve0 && reserve1 && reserve0.div(reserve1) 
+  console.log(rate,'_ratev')
+  const checkAvailableReserves =  pool && reserve0 && reserve1 && converter.hexToDec(reserves[1]._hex) == 0 && converter.hexToDec(reserves[0]._hex) == 0
 
   useEffect(() => {
     if(tokenOneAmount == null && tokenTwoAmount == null) return 
     if(checkAvailableReserves) return
-    const amountToken1 = (tokenOneAmount * rate.toFixed(2)).toFixed(2)
+    const amountToken1 = (tokenOneAmount/rate.toFixed(2)).toFixed(2)
     setTokenTwoAmount(amountToken1)
   }, [tokenOneAmount,reserves,rate,tokenTwoAmount,checkAvailableReserves])
 
   const actionAddLiquidity = usePrepareContractWrite({
-    address: "0x4Fb7bb788EB7330a4cd2C3EFba21e4D28400B09D",
+    address: pool.address,
     abi: ABIPool,
     functionName: 'addLiquidity',
     args: [
-      // "0x6C471153c86Bba4DE72f27f3752b94DA3C06602f",
-      // "0xB3AE2580B864d35206eF2c6047D30E8d88c45067",
       toBigNumber(tokenOneAmount),
       toBigNumber(tokenTwoAmount),
     ],
-    enabled: enableAdd && tokenOneAmount !== null && tokenTwoAmount !== null
+    enabled: pool && enableAdd && tokenOneAmount !== null && tokenTwoAmount !== null
   });
 
   const actionRemoveLiquidity = usePrepareContractWrite({
-    address: "0x4Fb7bb788EB7330a4cd2C3EFba21e4D28400B09D",
+    address: pool.address,
     abi: ABIPool,
     functionName: 'removeLiquidity',
     args: [
       toBigNumber(tokenOneAmount),
       toBigNumber(tokenTwoAmount),
     ],
-    enabled: enableRemove
+    enabled: pool && enableRemove
   });
 
   const { write, data } = useContractWrite(actionAddLiquidity.config);
-  const { wirte: wirteRemove, data: removeLiquidity} = useContractWrite(actionRemoveLiquidity.config);
+  const { write: wirteRemove, data: removeLiquidity} = useContractWrite(actionRemoveLiquidity.config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
+
 
   function changeAmount(e) {
     setTokenOneAmount(e.target.value);
@@ -113,41 +113,76 @@ function Pool(props) {
     setIsOpenToken(true)
   }
 
-  async function getBalances (e){
-    const balance = await getBalance(config, {
+  async function getBalances (){
+    const balance1 = await getBalance(config, {
         address: props.address,
         chainId: bscTestnet.chainId,
-        token: e.address, 
+        token: pool && pool.token[0].address, 
     })
-    setBalances(balance.formatted)
-    console.log(balance,'_balancebalancebalance')
+    const balance2 = await getBalance(config, {
+      address: props.address,
+      chainId: bscTestnet.chainId,
+      token: pool && pool.token[1].address, 
+    })
+    const balance3 = await getBalance(config, {
+      address: props.address,
+      chainId: bscTestnet.chainId,
+      token: pool && pool.tokenLP, 
+    })
+    setBalances([balance1.formatted,balance2.formatted,balance3.formatted])
   }
+
+  console.log(balances,'__-balancesbalances')
+
+  useEffect(() => {
+    if(pool){
+      getBalances()
+    }
+  },[pool])
 
   function addPool() {
     setEnableAdd(true)
-  
     if (write) {
       write();
+      getBalances()
     }
   }
 
   function removePool(){
     setEnableRemove(true)
-    
+    console.log(wirteRemove,'_wirteRemove')
     if(wirteRemove){
       wirteRemove()
+      getBalances()
     }
   }
 
   useEffect(() => {
-    if (isSuccess) {
+    if(removeLiquidity?.hash){
+      messageApi.success(`Transaction succeeded: ${removeLiquidity?.hash}!`);
+    }
+    if(enableAdd || enableRemove){
+      getBalances()
+    }
+    setEnableAdd(false)
+    setEnableRemove(false)
+  },[removeLiquidity?.hash,messageApi])
+  useEffect(() => {
+    if (isSuccess) {  
       messageApi.success(`Transaction succeeded: ${data?.hash}!`);
     } else if (isLoading) {
       messageApi.loading('Transaction is pending...');
     }
+
+    if(enableAdd || enableRemove){
+      getBalances()
+    }
+
     setEnableAdd(false)
+    setEnableRemove(false)
   }, [isLoading, isSuccess,messageApi,data?.hash]);
 
+  console.log(tokenOne && tokenTwo && rate && tokenOneAmount,'_tokenOneAmounttokenOneAmount')
   return (
     <>
       {contextHolder}
@@ -189,7 +224,6 @@ function Pool(props) {
                 key={i}
                 onClick={() => {
                     setIsOpenToken(false)
-                    getBalances(e)
                 }}
               >
                 <img src={e.img} alt={e.ticket} className="tokenLogo" />
@@ -207,24 +241,35 @@ function Pool(props) {
         <div className="tradeBoxHeader">
           <h4>Pool</h4>
           {
-            tokenOne && 
+            tokenOne && tokenTwo && 
             <div>  
-                <p>Balances: {balances && Math.round(balances)}</p>
+                <span>BalancesLP: {balances && balances[2] && Number(balances[2]).toFixed(2)}</span>
             </div>
           }
         </div>
-        {tokenOne && tokenTwo && rate &&
-          <div className="tradeBoxHeader">
-            <p>{checkAvailableReserves ? 0 : Number(rate.toFixed(2))} {tokenOne.ticker} per {tokenTwo.ticker}</p>
+        {tokenOneAmount && tokenOne && tokenTwo && rate &&
+          <div className="spanDev">
+            <span >{checkAvailableReserves ? 0 : Number(rate.toFixed(2))} {tokenOne.ticker} per {tokenTwo.ticker}</span>
           </div>
         }  
-
         <div className="inputs">
+        {
+            tokenOne && tokenTwo && 
+            <div className="balances1">  
+                <p>Balances: {balances && Math.round(balances[0])}</p>
+            </div>
+          }
           <Input
             placeholder="0"
             value={tokenOneAmount}
             onChange={changeAmount}
           />
+            {
+            tokenOne && tokenTwo && 
+            <div className="balances2">  
+                <p className="mb2">Balances: {balances && Math.round(balances[1])}</p>
+            </div>
+          }
             <Input
             placeholder="0"
             disabled={!checkAvailableReserves}
