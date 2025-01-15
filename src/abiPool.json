@@ -31,7 +31,7 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_pancakeFactory",
+				"name": "_factory",
 				"type": "address"
 			}
 		],
@@ -194,7 +194,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "pancakePair",
+		"name": "pair",
 		"outputs": [
 			{
 				"internalType": "address",
