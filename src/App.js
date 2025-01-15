@@ -7,6 +7,7 @@ import Tokens from "./components/Tokens";
 import { Routes, Route } from "react-router-dom";
 import { useConnect, useAccount } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import SwapAMM from "./components/SwapAMM";
 
 function App() {
   const { address, isConnected } = useAccount();
@@ -31,6 +32,11 @@ function App() {
                 element={<CreatePool isConnected={isConnected} address={address} />}
             />
             <Route path="/tokens" element={<Tokens />} />
+
+            <Route
+              path="/swapAMM"
+              element={<SwapAMM isConnected={isConnected} address={address} />}
+            />
           </Routes>
         </div>
     </div>

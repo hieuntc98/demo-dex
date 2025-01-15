@@ -1,16 +1,18 @@
 [
+
+
     {
-        "ticker": "RAK",
-        "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
-        "name": "RAK",
-        "address": "0x6C471153c86Bba4DE72f27f3752b94DA3C06602f",
+        "ticker": "tk1",
+        "img": "https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+        "name": "tk1",
+        "address": "0xEa165638a2f21cb4258aF14B6DD295241F68E04e",
         "decimals": 18
     },
     {
-        "ticker": "USDT",
-        "img": "https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
-        "name": "Tether USD",
-        "address": "0xB3AE2580B864d35206eF2c6047D30E8d88c45067",
+        "ticker": "tk2",
+        "img": "https://topj.vn/pic/New/images/Shiba-g%E1%BB%A3i%20%C4%91%C3%B2n.jpg",
+        "name": "tk2",
+        "address": "0x767dfE0987d3e56617E679657F95720153ba05d1",
         "decimals": 18
     }
 ]
