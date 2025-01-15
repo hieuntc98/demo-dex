@@ -60,6 +60,7 @@ class Pair {
       amountIn,
       amountOut: this.caculateAmountOut(amountIn),
       token0: this.address0,
+      token1: this.address1,
       provider: this.pairAddress
     }
   }
@@ -256,18 +257,18 @@ const zeroAddress = '0x0000000000000000000000000000000000000000'
 const addressMultiCall = '0xcA11bde05977b3631167028862bE2a173976CA11'
 const addressFactory = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
 
-const addressFactorys = [
-  '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73', // pancake
-  '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6', // ape
-  '0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8', // mdex
-  '0x858E3312ed3A876947EA49d572A7C42DE08af7EE' // bisswap
-]
+// const addressFactorys = [
+//   '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73', // pancake
+//   '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6', // ape
+//   '0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8', // mdex
+//   '0x858E3312ed3A876947EA49d572A7C42DE08af7EE' // bisswap
+// ]
 
-const tokenMid = [
-  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d', // usdc
-  '0x55d398326f99059ff775485246999027b3197955' // usdt
-  //   '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' // wbnb
-]
+// const tokenMid = [
+//   '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d', // usdc
+//   '0x55d398326f99059ff775485246999027b3197955' // usdt
+//   //   '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' // wbnb
+// ]
 
 const tokenIn = '0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F' // apala
 const tokenOut = '0xe9e7cea3dedca5984780bafc599bd69add087d56' // busd
@@ -275,9 +276,33 @@ const tokenOut = '0xe9e7cea3dedca5984780bafc599bd69add087d56' // busd
 
 // const tokenOut = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' // Wbnb
 // const tokenIn = '0x87230146E138d3F296a9a77e497A2A83012e9Bc5' // busd
+const config = {
+  97: {
+    addressFactorys: ['0x6725F303b657a9451d8BA641348b6761A6CC7a17'],
+    tokenMid: ['0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd'],
+    rpc: 'https://go.getblock.io/9e22612f1bfc4e1d81b48b47fd9798d2'
+  },
+  56: {
+    addressFactorys: [
+      '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73', // pancake
+      '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6', // ape
+      '0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8', // mdex
+      '0x858E3312ed3A876947EA49d572A7C42DE08af7EE' // bisswap
+    ],
+    tokenMid: [
+      '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d', // usdc
+      '0x55d398326f99059ff775485246999027b3197955' // usdt
+    ],
+    rpc: 'https://bsc-mainnet.nodereal.io/v1/5c4ed7c647c0479f9ae118b0b62c745c'
+  }
+}
 
-export const main = async (tokenIn, tokenOut, amount) => {
-  const web3 = new Web3('https://bsc-mainnet.nodereal.io/v1/5c4ed7c647c0479f9ae118b0b62c745c')
+export const main = async (tokenIn, tokenOut, amount, sender, chain) => {
+  const addressFactorys = config[chain].addressFactorys
+  const tokenMid = config[chain].tokenMid
+  const rpc = config[chain].rpc
+  console.log('🚀 ~ main ~ config[chain]:', chain, config[chain])
+  const web3 = new Web3(rpc)
   const decodeParams = schema => data => {
     try {
       const rawData = web3.eth.abi.decodeParameters(schema, data)
@@ -414,49 +439,12 @@ export const main = async (tokenIn, tokenOut, amount) => {
     }
   })
 
+  console.log('🚀 ~ okla ~ okla:', okla)
   // return
 
   const ecec = okla.reduce((total, item) => ({...total, [item.id]: item}), {})
 
   const pairAC = Pair.fromParallelPairs(addressFactorys.map(factory => ecec[factory + tokenIn + tokenOut].pair))
-
-  // console.log('🚀 ~ main ~ pairAC:', pairAC.parallel[0].pair)
-
-  // return
-
-  // const pairAB1 = Pair.fromParallelPairs(
-  //   addressFactorys
-  //     .map(factory => {
-  //       const data = ecec[factory + tokenIn + tokenMid[1]]
-  //       if (data.pairAddress === zeroAddress) return
-  //       return data.pair
-  //     })
-  //     .filter(item => item)
-  // )
-  // console.log('🚀 ~ main ~ pairAB1:', pairAB1)
-
-  // return
-
-  const pairAC1 = Pair.fromSeriesPairs({
-    pair0: Pair.fromParallelPairs(
-      addressFactorys
-        .map(factory => {
-          const data = ecec[factory + tokenIn + tokenMid[1]]
-          if (data.pairAddress === zeroAddress) return
-          return data.pair
-        })
-        .filter(item => item)
-    ),
-    pair1: Pair.fromParallelPairs(
-      addressFactorys
-        .map(factory => {
-          const data = ecec[factory + tokenMid[1] + tokenOut]
-          if (data.pairAddress === zeroAddress) return
-          return data.pair
-        })
-        .filter(item => item)
-    )
-  })
 
   const pairAC2 = Pair.fromSeriesPairs({
     pair0: Pair.fromParallelPairs(
@@ -479,7 +467,133 @@ export const main = async (tokenIn, tokenOut, amount) => {
     )
   })
 
-  const pairAll = Pair.fromParallelPairs([pairAC, pairAC1, pairAC2])
+  const dadad = [pairAC,pairAC2]
 
-  return pairAll.getData(amount * 10 ** 18, addressRouter)
+  if (chain === 56) {
+    const pairAC1 = Pair.fromSeriesPairs({
+      pair0: Pair.fromParallelPairs(
+        addressFactorys
+          .map(factory => {
+            const data = ecec[factory + tokenIn + tokenMid[1]]
+            if (data.pairAddress === zeroAddress) return
+            return data.pair
+          })
+          .filter(item => item)
+      ),
+      pair1: Pair.fromParallelPairs(
+        addressFactorys
+          .map(factory => {
+            const data = ecec[factory + tokenMid[1] + tokenOut]
+            if (data.pairAddress === zeroAddress) return
+            return data.pair
+          })
+          .filter(item => item)
+      )
+    })
+    dadad.push(pairAC1)
+  }
+
+  const pairAll = Pair.fromParallelPairs(dadad)
+
+  return pairAll.getData(amount * 10 ** 18, sender)
+}
+
+const abiaaaaa = [
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountIn',
+        type: 'uint256'
+      },
+      {
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256'
+      },
+      {
+        internalType: 'address',
+        name: 'pair',
+        type: 'address'
+      },
+      {
+        internalType: 'address',
+        name: 'token0',
+        type: 'address'
+      }
+    ],
+    name: 'swap',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'amountIn',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'amountOut',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: 'pair',
+            type: 'address'
+          },
+          {
+            internalType: 'address',
+            name: 'token0',
+            type: 'address'
+          },
+          {
+            internalType: 'address',
+            name: 'from',
+            type: 'address'
+          },
+          {
+            internalType: 'address',
+            name: 'to',
+            type: 'address'
+          }
+        ],
+        internalType: 'struct AggregatorLor.swapData[]',
+        name: 'data',
+        type: 'tuple[]'
+      }
+    ],
+    name: 'swapMulti',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+]
+
+export const onSwapTestnet = async (data)=>{
+  const privateKey = 'b367c1164d4042b0a759d5df02c9604bad99b7b104e04bffd375dcdfdc4422b0'
+  const web3 = new Web3('https://go.getblock.io/9e22612f1bfc4e1d81b48b47fd9798d2')
+  const account = web3.eth.accounts.privateKeyToAccount(privateKey)
+  let nonce = await web3.eth.getTransactionCount('0xF1DDB657AC2A3eBfECF16d1a972AA5995D2B6248')
+  const contract = new web3.eth.Contract(abiaaaaa, addressRouter)
+  let gasPrice = Number(await web3.eth.getGasPrice()) + 10000
+  const rawTransaction = {
+    to: '0x9E9b3CBBA901031f646B04e9fC9a2E3448B40335',
+    data: contract.methods.swapMulti(data).encodeABI(),
+    gasPrice: gasPrice,
+    nonce: nonce,
+    gas: 700000
+  }
+
+  const signedTransaction = await account.signTransaction(rawTransaction)
+
+  const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+  
+
+  return receipt.transactionHash
+
 }

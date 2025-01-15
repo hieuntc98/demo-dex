@@ -1,9 +1,30 @@
 [
   {
-    "ticker": "CRV",
-    "img": "https://cdn.moralis.io/eth/0xd533a949740bb3306d119cc777fa900ba034cd52.png",
-    "name": "Curve DAO Token",
-    "address": "0xd533a949740bb3306d119cc777fa900ba034cd52",
+    "ticker": "WBNB",
+    "img": "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
+    "name": "WBNB",
+    "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    "decimals": 18
+  },
+  {
+    "ticker": "CAKE",
+    "img": "https://tokens.pancakeswap.finance/images/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png",
+    "name": "CAKE",
+    "address": "0xFa60D973F7642B748046464e165A65B7323b0DEE",
+    "decimals": 18
+  },
+  {
+    "ticker": "USDT",
+    "img": "https://tokens.pancakeswap.finance/images/symbol/usdt.png",
+    "name": "USDT",
+    "address": "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+    "decimals": 18
+  },
+  {
+    "ticker": "BUSD",
+    "img": "https://tokens.pancakeswap.finance/images/symbol/busd.png",
+    "name": "busd",
+    "address": "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee",
     "decimals": 18
   }
 ]

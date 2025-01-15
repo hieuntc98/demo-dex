@@ -5,19 +5,20 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { configureChains, mainnet, WagmiConfig, createClient } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { bscTestnet } from "wagmi/chains";
+import { bscTestnet, bsc } from "wagmi/chains";
 
 import { http, createConfig } from '@wagmi/core'
 
 export const config = createConfig({
-  chains: [bscTestnet],
+  chains: [bscTestnet, bsc],
   transports: {
     [bscTestnet.id]: http(),
+    [bsc.id]: http(),
   },
 })
 
 const { provider, webSocketProvider } = configureChains(
-  [bscTestnet],
+  [bscTestnet,bsc],
   [publicProvider()]
 );
 
